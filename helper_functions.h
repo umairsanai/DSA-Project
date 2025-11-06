@@ -34,3 +34,9 @@ vector<string> split(string s, string delimiter) {
     ans.push_back(s.substr(start));
     return ans;
 }
+string trim(string s){
+    int start = 0 , end = (int)s.length()-1;
+    while(start <= end && s[start] == ' ') start++;
+    while(end >= 0 && s[end] == ' ') end--;
+    return s.substr(start, end-start+1);
+}
