@@ -14,16 +14,46 @@
 
 using namespace std;
 
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void printHeader() {
+    cout << "\n";
+    cout << "  +====================================================================+\n";
+    cout << "  |                                                                    |\n";
+    cout << "  |   ##### #######  #   #  #     #   ####                             |\n";
+    cout << "  |     #      #     ##  #  ##   ##  #                                 |\n";
+    cout << "  |     #      #     # # #  # # # #   ###                              |\n";
+    cout << "  |     #      #     #  ##  #  #  #      #                             |\n";
+    cout << "  |   #####    #     #   #  #     #  ####                              |\n";
+    cout << "  |                                                                    |\n";
+    cout << "  |        Integrated Transport Network Management System              |\n";
+    cout << "  |                                                                    |\n";
+    cout << "  +====================================================================+\n";
+}
+
 void show_menu(){
-    cout << "\n=== ITNMS Main Menu ===" << endl;
-    cout << "1. Network Management (Graph Operations)" << endl;
-    cout << "2. Vehicle Registry (Hash Table Operations)" << endl;
-    cout << "3. Edit Tickets (Array Operations)" << endl;
-    cout << "4. Passenger Ticketing (Queue Operations)" << endl;
-    cout << "5. Navigation History (Stack Operations)" << endl;
-    cout << "6. Algorithm Benchmarking (Sorting/Searching)" << endl;
-    cout << "7. Exit" << endl;
-    cout<<"Enter your choice: ";
+    printHeader();
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                          MAIN MENU                               |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  Network Management      (Graph Operations)                |\n";
+    cout << "  |   [2]  Vehicle Registry        (Hash Table Operations)           |\n";
+    cout << "  |   [3]  Edit Tickets            (Array Operations)                |\n";
+    cout << "  |   [4]  Passenger Ticketing     (Queue Operations)                |\n";
+    cout << "  |   [5]  Navigation History      (Stack Operations)                |\n";
+    cout << "  |   [6]  Algorithm Benchmarking  (Sorting/Searching)               |\n";
+    cout << "  |   [7]  Exit                                                      |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter your choice: ";
 }
 
 int main(){
@@ -78,11 +108,20 @@ int main(){
                 sortingOperations(stations);
                 break;
 
+            case 7:
+                break;
+
             default:
                 cout << "Invalid choice! Enter between (1-7)!" << "\n";
                 break;
         }
     }
-    cout<<"Exiting Application.....\n\n";
+    cout << "\n";
+    cout << "  +====================================================================+\n";
+    cout << "  |                                                                    |\n";
+    cout << "  |          Thank you for using ITNMS! Goodbye!                       |\n";
+    cout << "  |                                                                    |\n";
+    cout << "  +====================================================================+\n";
+    cout << "\n";
     return 0;
 }

@@ -21,9 +21,16 @@ void add_history(Stack<string>&history, string s);
 void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Stack<passenger>&passenger_history, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
     passenger p;
     int operation;
-    cout<<"\n1. Add passenger\n";
-    cout<<"2. Remove passenger\n";
-    cout<<"Enter operation: ";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                     PASSENGER TICKETING                         |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  Add Passenger                                             |\n";
+    cout << "  |   [2]  Remove Passenger                                          |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter operation: ";
     cin>>operation;
     cin.ignore();
 
@@ -32,7 +39,7 @@ void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Sta
         getline(cin , p.name);
         p.hasTicket = false;
         passengers.enqueue(p);
-        cout<<"Passenger has been added!"<<endl;
+        cout<<"\n  [OK] Passenger has been added!"<<endl;
         string s = "+2" + p.name + " added";
         add_history(history, s);
         passenger_history.push(p);
@@ -41,11 +48,11 @@ void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Sta
         if(!passengers.isEmpty()){
             p = passengers.queueFront();
             passengers.dequeue();
-            cout<<"Passenger "<<p.name<<" has been removed!"<<endl;
+            cout<<"\n  [OK] Passenger "<<p.name<<" has been removed!"<<endl;
             string s = "-2" + p.name + " removed";
 
-            if(tickets.size()) cout<<"Passenger has been assigned ticket!"<<endl;
-            else cout<<"No ticket to be assigned!"<<endl;
+            if(tickets.size()) cout<<"  [+] Passenger has been assigned ticket!"<<endl;
+            else cout<<"  [!] No ticket to be assigned!"<<endl;
 
             for(auto &[ticket_id , ticket] : tickets){
                 p.ticket = ticket;
@@ -58,7 +65,7 @@ void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Sta
             add_history(history, s);
             passenger_history.push(p);
         } else{
-            cout<<"No passengers available!\n\n";
+            cout<<"\n  [!] No passengers available!\n\n";
         }
     }
 }

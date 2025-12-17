@@ -22,14 +22,19 @@ class Ticket;
 
 void show_history(Stack<string>history){
     string temp[history.length()];
-    cout<<"\nShowing History: \n\n";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                      OPERATION HISTORY                          |\n";
+    cout << "  +------------------------------------------------------------------+\n";
     int i=0;
     while(!history.isEmpty()){
         temp[i] = history.stackTop();
         history.pop();
-        cout<<i+1<<": "<<temp[i].substr(2)<<endl;
+        cout<<"    "<<i+1<<". "<<temp[i].substr(2)<<endl;
         i++;
     }
+    if(i == 0) cout << "    (No history available)\n";
+    cout << "\n";
 }
 
 void add_history(Stack<string>&history, string s){
@@ -43,9 +48,16 @@ void add_history(Stack<string>&history, string s){
 
 void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>stations_history, Stack<Route_Info>routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
     int operation;
-    cout<<"\n1. View History\n";
-    cout<<"2. Undo Operation\n";
-    cout<<"Enter your operation: ";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                     NAVIGATION HISTORY                          |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  View History                                              |\n";
+    cout << "  |   [2]  Undo Operation                                            |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter your operation: ";
     cin>>operation;
 
     if(operation == 1) show_history(history);
@@ -121,7 +133,7 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     tickets[temp_ticket.ticketID] = temp_ticket;
                 }
             }
-            cout<<"Operation Undo Done\n\n";
-        } else cout<<"No operations done yet!\n\n";
+            cout<<"\n  [OK] Operation Undo Done\n\n";
+        } else cout<<"\n  [!] No operations done yet!\n\n";
     }
 }
