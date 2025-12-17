@@ -76,43 +76,38 @@ class Graph {
         int edges;
     public:
         unordered_map<string, unordered_map<string, Route>> map;
+        unordered_map<string,int> stations_record;
         Graph() {
             nodes = edges = 0;
         }
         void insertNode(string station) {
-            if (map.count(station))
-                return;
+            stations_record[station] = 1;
             map[station] = {};
             nodes++;
         }
         void deleteNode(string station) {
-            if (!map.count(station)) 
-                return; 
-            this->map.erase(station);
-            for (auto& node : map) {
-                node.second.erase(station);
-            }
             nodes--;
+            stations_record[station] = 0;
         }
         void insertEdge(string source, string dest, Route route) {
-            if (map.count(source)) {
+            if (stations_record[source] == 1) {
                 map[source].insert({dest, route});
             } else {
-                map[source] = {{dest, route}};
+                return;
             }
             edges++;
         }
         void deleteEdge(string source, string dest) {
-            if (!map.count(source)) 
+            if (stations_record[source] == 0) 
                 return;
             map[source].erase(dest);
             edges--;
         }
         bool hasNode(string node) {
-            return map.count(node);
+            return stations_record[node];
         }
         bool hasEdge(string from, string to) {
-            return map.count(from) && map[from].count(to);
+            return stations_record[from] && map[from].count(to);
         }
         unordered_map<string, int> getShortestPath(string src, SORT_BY option) {
             Array<Edge> edgeList = this->getEdgeList(option);
@@ -185,7 +180,7 @@ class Graph {
         }
 private:
         void dfsForPrintStations(string curr, unordered_set<string>& vis) {
-            if (vis.count(curr)) return;
+            if (!stations_record[curr] || vis.count(curr)) return;
             vis.insert(curr);
             cout << "Station: " << curr << "\n";
             for (auto& neighbour : map[curr]) {
