@@ -18,10 +18,10 @@ void show_menu(){
     cout << "\n=== ITNMS Main Menu ===" << endl;
     cout << "1. Network Management (Graph Operations)" << endl;
     cout << "2. Vehicle Registry (Hash Table Operations)" << endl;
-    cout << "3. Passenger Ticketing (Queue Operations)" << endl;
-    cout << "4. Navigation History (Stack Operations)" << endl;
-    cout << "5. Algorithm Benchmarking (Sorting/Searching)" << endl;
-    cout << "6. Reports & Analytics (Heaps/BST)" << endl;
+    cout << "3. Edit Tickets (Array Operations)" << endl;
+    cout << "4. Passenger Ticketing (Queue Operations)" << endl;
+    cout << "5. Navigation History (Stack Operations)" << endl;
+    cout << "6. Algorithm Benchmarking (Sorting/Searching)" << endl;
     cout << "7. Exit" << endl;
     cout<<"Enter your choice: ";
 }
@@ -35,17 +35,22 @@ int main(){
     Stack<Vehicle>vehicles_history;
     Stack<Route_Info>routes_history;
     Stack<string>stations_history;
+    string choice_str;
     int choice = 0;
-
-    Array<Ticket> tickets;
-    tickets.push_back(Ticket("Hala", "Karachi", "Economy", "856E", "1234GL", 20, 300));
-    tickets.push_back(Ticket("Karachi", "Hala", "AC Standard", "124E", "1234GL", 30, 120));
-    tickets.push_back(Ticket("Karachi", "Nawabshah", "Business", "65AC", "4532RB", 19, 1080)); 
+    unordered_map<string, Ticket> tickets;     // <id, Ticket>
+    tickets["856E"] = Ticket("Hala", "Karachi", "Economy", "856E", "1234GL", 20, 300);
+    tickets["124E"] = Ticket("Karachi", "Hala", "AC Standard", "124E",  "1234GL", 30, 120);
+    tickets["65AC"] = Ticket("Karachi", "Nawabshah", "Business", "65AC",  "4532RB", 19, 1080); 
 
     while(choice != 7){
         show_menu();
-        cin >> choice;
+        cin >> choice_str;
         cin.ignore();
+
+        if (!isValidOption(choice_str, 1, 7))
+            continue;
+
+        choice = stoi(choice_str);
 
         switch(choice){
             case 1:
@@ -57,24 +62,23 @@ int main(){
                 break;
 
             case 3:
-                passenger_ticketing(passengers, history, passenger_history);
+                ticketOperations(stations, tickets, vehicles);
                 break;
 
             case 4:
-                history_operations(history, passenger_history, vehicles_history, stations_history, routes_history, stations, passengers, vehicles);
+                passenger_ticketing(passengers, history, passenger_history);
                 break;
 
             case 5:
-                sortingOperations(stations);
-                break;
-            case 6:
+                history_operations(history, passenger_history, vehicles_history, stations_history, routes_history, stations, passengers, vehicles);
                 break;
 
-            case 7:
+            case 6:
+                sortingOperations(stations);
                 break;
 
             default:
-                cout<<"Invalid choice! Enter between (1-7)!";
+                cout << "Invalid choice! Enter between (1-7)!" << "\n";
                 break;
         }
     }
