@@ -38,9 +38,10 @@ int main(){
     string choice_str;
     int choice = 0;
     unordered_map<string, Ticket> tickets;     // <id, Ticket>
-    tickets["856E"] = Ticket("Hala", "Karachi", "Economy", "856E", "1234GL", 20, 300);
-    tickets["124E"] = Ticket("Karachi", "Hala", "AC Standard", "124E",  "1234GL", 30, 120);
-    tickets["65AC"] = Ticket("Karachi", "Nawabshah", "Business", "65AC",  "4532RB", 19, 1080); 
+    Stack<Ticket>tickets_history;
+    // tickets["856E"] = Ticket("Hala", "Karachi", "Economy", "856E", "1234GL", 20, 300);
+    // tickets["124E"] = Ticket("Karachi", "Hala", "AC Standard", "124E",  "1234GL", 30, 120);
+    // tickets["65AC"] = Ticket("Karachi", "Nawabshah", "Business", "65AC",  "4532RB", 19, 1080); 
 
     while(choice != 7){
         show_menu();
@@ -62,15 +63,15 @@ int main(){
                 break;
 
             case 3:
-                ticketOperations(stations, tickets, vehicles);
+                ticketOperations(stations, tickets, vehicles, tickets_history, history);
                 break;
 
             case 4:
-                passenger_ticketing(passengers, history, passenger_history);
+                passenger_ticketing(passengers, history, passenger_history, tickets_history, tickets);
                 break;
 
             case 5:
-                history_operations(history, passenger_history, vehicles_history, stations_history, routes_history, stations, passengers, vehicles);
+                history_operations(history, passenger_history, vehicles_history, stations_history, routes_history, stations, passengers, vehicles, tickets_history, tickets);
                 break;
 
             case 6:

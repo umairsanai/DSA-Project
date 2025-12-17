@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "vehicle.h"
+#include "history.h"
 using namespace std;
 
 class Ticket {
@@ -15,6 +16,31 @@ public:
         this->vehicleID = vehicleID;
         this->seat = seat;
         this->duration = duration;
+    }
+
+    // Copy constructor
+    Ticket(const Ticket& other) {
+        this->from = other.from;
+        this->to = other.to;
+        this->comfort = other.comfort;
+        this->ticketID = other.ticketID;
+        this->vehicleID = other.vehicleID;
+        this->seat = other.seat;
+        this->duration = other.duration;
+    }
+
+    // Copy assignment operator
+    Ticket& operator=(const Ticket& other) {
+        if (this != &other) {
+            this->from = other.from;
+            this->to = other.to;
+            this->comfort = other.comfort;
+            this->ticketID = other.ticketID;
+            this->vehicleID = other.vehicleID;
+            this->seat = other.seat;
+            this->duration = other.duration;
+        }
+        return *this;
     }
 };
 
@@ -41,7 +67,7 @@ void printTicket(Ticket& ticket) {
 }
 
 
-void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<Vehicle,int>& vehicles) {
+void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<Vehicle,int>& vehicles, Stack<Ticket>&tickets_history, Stack<string>&history) {
     string from, to, class_choice, ticketID, vehicleID, seats, duration;
 
     cout << "From: "; cin >> from;
@@ -91,19 +117,23 @@ void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<
         class_choice = "Business";
 
     tickets[ticketID] = Ticket(from, to, class_choice, ticketID, vehicleID, stoi(seats), stoi(duration));
+    tickets_history.push(tickets[ticketID]);
+    add_history(history, "+5ticket from "+from+" to "+to+" added");
     cout << "\n ~~~~~ Ticket Added Successfully ~~~~~ \n";
     printTicket(tickets[ticketID]);
     cout << "\n";
     return;
 }
 
-void deleteTicket(unordered_map<string, Ticket>& tickets) {
+void deleteTicket(unordered_map<string, Ticket>& tickets, Stack<Ticket>&tickets_history, Stack<string>&history) {
     string ticketID;
     cout << "Ticket ID: "; cin >> ticketID;    
     if (!tickets.count(ticketID)) {
         cout << "Error: No ticket exists with this Ticket ID\n";
         return;
     }
+    tickets_history.push(tickets[ticketID]);
+    add_history(history, "-5ticket from "+tickets[ticketID].from+" to "+tickets[ticketID].to+" removed");
     tickets.erase(ticketID);
     cout <<"~~~~~ Ticket Deleted Successfully ~~~~~\n";
     return;
@@ -115,7 +145,7 @@ void showAllTickets(unordered_map<string, Ticket>& tickets) {
     }
 }
 
-void ticketOperations(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<Vehicle,int>& vehicles) {
+void ticketOperations(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<Vehicle,int>& vehicles, Stack<Ticket>&tickets_history, Stack<string>&history) {
     int choice;
     do {
         string option = showTicketOperationsMenu();
@@ -127,10 +157,10 @@ void ticketOperations(Graph& stations, unordered_map<string, Ticket>& tickets, H
 
         switch (choice) {
             case 1:
-                addTicket(stations, tickets, vehicles);
+                addTicket(stations, tickets, vehicles, tickets_history, history);
                 break;
             case 2: 
-                deleteTicket(tickets);
+                deleteTicket(tickets, tickets_history, history);
                 break;
             case 3: 
                 showAllTickets(tickets);

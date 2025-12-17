@@ -3,10 +3,13 @@
 #include<iostream>
 #include"queue.h"
 #include"stack.h"
+#include"ticket.h"
 using namespace std;
 
 struct passenger{
     string name;
+    Ticket ticket;
+    bool hasTicket;
 };
 
 // Forward declaration of add_history to use it before including history.h
@@ -15,7 +18,7 @@ void add_history(Stack<string>&history, string s);
 // Include history.h after passenger struct definition to avoid circular dependency
 #include"history.h"
 
-void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Stack<passenger>&passenger_history){
+void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Stack<passenger>&passenger_history, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
     passenger p;
     int operation;
     cout<<"\n1. Add passenger\n";
@@ -27,6 +30,7 @@ void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Sta
     if(operation == 1){
         cout<<"\nEnter passenger name: ";
         getline(cin , p.name);
+        p.hasTicket = false;
         passengers.enqueue(p);
         cout<<"Passenger has been added!"<<endl;
         string s = "+2" + p.name + " added";
@@ -39,6 +43,18 @@ void passenger_ticketing(Queue<passenger>&passengers, Stack<string>&history, Sta
             passengers.dequeue();
             cout<<"Passenger "<<p.name<<" has been removed!"<<endl;
             string s = "-2" + p.name + " removed";
+
+            if(tickets.size()) cout<<"Passenger has been assigned ticket!"<<endl;
+            else cout<<"No ticket to be assigned!"<<endl;
+
+            for(auto &[ticket_id , ticket] : tickets){
+                p.ticket = ticket;
+                tickets_history.push(ticket);
+                p.hasTicket = true;
+                tickets.erase(ticket_id);
+                break;
+            }
+
             add_history(history, s);
             passenger_history.push(p);
         } else{

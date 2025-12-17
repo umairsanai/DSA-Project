@@ -12,6 +12,7 @@ struct passenger;
 struct Vehicle;
 class Graph;
 class Route;
+class Ticket;
 
 // Include full definitions - these files include history.h after struct/class definitions
 // so #pragma once prevents circular dependency issues
@@ -38,8 +39,9 @@ void add_history(Stack<string>&history, string s){
 // Include graph.h after add_history is defined so Graph and Route are available
 // graph.h includes history.h at the end, but #pragma once prevents circular dependency
 #include"graph.h"
+#include"ticket.h"
 
-void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>stations_history, Stack<Route_Info>routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles){
+void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>stations_history, Stack<Route_Info>routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
     int operation;
     cout<<"\n1. View History\n";
     cout<<"2. Undo Operation\n";
@@ -77,6 +79,10 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     Route_Info temp_route = routes_history.stackTop();
                     routes_history.pop();
                     stations.deleteEdge(temp_route.from, temp_route.to);
+                } else if(top[1] == '5'){
+                    Ticket temp_ticket = tickets_history.stackTop();
+                    tickets_history.pop();
+                    tickets.erase(temp_ticket.ticketID);
                 }
             } else{
                 if(top[1] == '1'){
@@ -97,6 +103,10 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     for(i=0 ; i<n ; i++){
                         passengers.enqueue(temp[i]);
                     }
+                    if(top_pass.hasTicket){
+                        tickets[top_pass.ticket.ticketID] = top_pass.ticket;
+                        tickets_history.pop();
+                    }
                 } else if(top[1] == '3'){
                     Vehicle top_veh = vehicles_history.stackTop();
                     vehicles_history.pop();
@@ -105,6 +115,10 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     Route_Info temp_route = routes_history.stackTop();
                     routes_history.pop();
                     stations.insertEdge(temp_route.from, temp_route.to, temp_route.route);
+                } else if(top[1] == '5'){
+                    Ticket temp_ticket = tickets_history.stackTop();
+                    tickets_history.pop();
+                    tickets[temp_ticket.ticketID] = temp_ticket;
                 }
             }
             cout<<"Operation Undo Done\n\n";
