@@ -4,7 +4,7 @@ using namespace std;
 
 bool startsWith(string source, string part) {
     if (part.size() > source.size()) return false;
-    for (int i = 0; i < part.size(); i++) {
+    for (int i = 0; i < (int)part.size(); i++) {
         if (source[i] != part[i])
             return false;
     }
@@ -25,7 +25,7 @@ bool endsWith(string source, string part) {
 vector<string> split(string s, string delimiter) {
     vector<string> ans;
     int start = 0;
-    for (int i = 0; i < s.size(); i++) {
+    for (int i = 0; i < (int)s.size(); i++) {
         if (startsWith(s.substr(i), delimiter)) {
             ans.push_back(s.substr(start, i-start));
             start = i + delimiter.size();
