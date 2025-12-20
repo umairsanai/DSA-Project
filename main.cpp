@@ -38,7 +38,6 @@ void printHeader() {
 }
 
 void show_menu(){
-    printHeader();
     cout << "\n";
     cout << "  +------------------------------------------------------------------+\n";
     cout << "  |                          MAIN MENU                               |\n";
@@ -72,6 +71,8 @@ int main(){
     // tickets["856E"] = Ticket("Hala", "Karachi", "Economy", "856E", "1234GL", 20, 300);
     // tickets["124E"] = Ticket("Karachi", "Hala", "AC Standard", "124E",  "1234GL", 30, 120);
     // tickets["65AC"] = Ticket("Karachi", "Nawabshah", "Business", "65AC",  "4532RB", 19, 1080); 
+
+    printHeader();
 
     while(choice != 7){
         show_menu();
