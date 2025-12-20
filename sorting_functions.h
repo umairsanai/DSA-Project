@@ -206,10 +206,18 @@ void heapify(Array<Edge>& edgeList, int n, int i) {
 
 string showSortingOperationsMenu() {
     string option;
-    cout << "1. Show All Routes" << "\n"
-         << "2. Find Cheapest Routes" << "\n"
-         << "3. Find Fastest Routes" << "\n"
-         << "4. Back" << "\n";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                    ALGORITHM BENCHMARKING                       |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  Show All Routes                                           |\n";
+    cout << "  |   [2]  Find Cheapest Routes                                      |\n";
+    cout << "  |   [3]  Find Fastest Routes                                       |\n";
+    cout << "  |   [4]  Back                                                      |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter your choice: ";
     cin >> option;
     return option;
 }
@@ -218,12 +226,20 @@ SORT getSort() {
     string option;
 
     do {
-        cout << "1. Bubble Sort" << "\n"
-             << "2. Selection Sort" << "\n"
-             << "3. Insertion Sort" << "\n"
-             << "4. Merge Sort" << "\n"
-             << "5. Quick Sort" << "\n"
-             << "6. Heap Sort" << "\n";
+        cout << "\n";
+        cout << "  +------------------------------------------------------------------+\n";
+        cout << "  |                   SELECT SORTING ALGORITHM                      |\n";
+        cout << "  +------------------------------------------------------------------+\n";
+        cout << "  |                                                                  |\n";
+        cout << "  |   [1]  Bubble Sort                                               |\n";
+        cout << "  |   [2]  Selection Sort                                            |\n";
+        cout << "  |   [3]  Insertion Sort                                            |\n";
+        cout << "  |   [4]  Merge Sort                                                |\n";
+        cout << "  |   [5]  Quick Sort                                                |\n";
+        cout << "  |   [6]  Heap Sort                                                 |\n";
+        cout << "  |                                                                  |\n";
+        cout << "  +------------------------------------------------------------------+\n";
+        cout << "\n  >> Select algorithm: ";
         cin >> option;
     } while (!isValidOption(option, 1, 6));
 
@@ -242,7 +258,7 @@ SORT getSort() {
 
 void printEdgeList(Array<Edge>& edgeList, SORT_BY option) {
     for (int i = 0; i < edgeList.length(); i++) {
-        cout << edgeList[i].src << " -> " << edgeList[i].dest << "\t" 
+        cout << "    " << edgeList[i].src << " -> " << edgeList[i].dest << "\t" 
              << (option == COST ? "Cost: " : "Time: ") << edgeList[i].weight << "\n";
     }
 }
@@ -265,11 +281,14 @@ void sortRoutes(Graph& stations, SORT_BY option) {
        edgeList = heapSort(stations, option);
     
     if (!edgeList.length()) {
-        cout << "\n\n~~~~~ No Routes Found ~~~~~\n";
+        cout << "\n  [!] No Routes Found\n";
         return;
     }
 
-    cout << "\n\n~~~~~~ ====== " << (option == COST ? "Cheapest" : "Fastest") << " Routes ====== ~~~~~~\n\n";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |           " << (option == COST ? "CHEAPEST" : "FASTEST ") << " ROUTES (Sorted)                          |\n";
+    cout << "  +------------------------------------------------------------------+\n\n";
     printEdgeList(edgeList, option);    
 }
 

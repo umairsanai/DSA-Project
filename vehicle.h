@@ -31,9 +31,16 @@ void add_history(Stack<string>&history, string s);
 #include"history.h"
 
 void insert_and_remove_vehicle(HashMap<Vehicle,int>&vehicles, Stack<string>&history, Stack<Vehicle>&vehicles_history){
-    cout<<"\n1. Add Vehicle\n";
-    cout<<"2. Remove Vehicle\n";
-    cout<<"Enter operation: ";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                      VEHICLE REGISTRY                           |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  Add Vehicle                                               |\n";
+    cout << "  |   [2]  Remove Vehicle                                            |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter operation: ";
     int operation;
     cin>>operation;
     cin.ignore();
@@ -48,18 +55,18 @@ void insert_and_remove_vehicle(HashMap<Vehicle,int>&vehicles, Stack<string>&hist
     if(operation == 1){
         // cout<<v.id<<" "<<v.name<<endl;
         vehicles.insert(v,1);
-        cout<<"Vehicle Added Successfully!\n";
+        cout<<"\n  [OK] Vehicle Added Successfully!\n";
         string s = "+3" + v.name + "-" + v.id + " added";
         add_history(history, s);
     }
     else{
         if(vehicles.containsKey(v)){
             vehicles.remove(v);
-            cout<<"Vehicle Removed Successfully!\n";
+            cout<<"\n  [OK] Vehicle Removed Successfully!\n";
             string s = "-3" + v.name + "-" + v.id + " removed";
             add_history(history, s);
         } else{
-            cout<<"Vehicle Not Found!\n";
+            cout<<"\n  [X] Vehicle Not Found!\n";
         }
     }
 

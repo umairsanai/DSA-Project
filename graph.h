@@ -114,6 +114,10 @@ class Graph {
             return bellmanFord(nodes, edgeList, src);
         }
         void printRoundTrips() {
+            cout << "\n";
+            cout << "  +------------------------------------------------------------------+\n";
+            cout << "  |                        ROUND TRIPS                              |\n";
+            cout << "  +------------------------------------------------------------------+\n\n";
 
             Array<string> cycle;
             Array<int> cost, time;
@@ -130,34 +134,43 @@ class Graph {
                 roundTrips[i].push_back(roundTrips[i].front());
                 int n = roundTrips[i].length();
 
-                cout << i+1 << ". ";
+                cout << "    " << i+1 << ". ";
                 for (int j = 0; j < n; j++) {
                     cout << roundTrips[i][j];
                     if (j < n-1)
                         cout << " -> ";
                 }
 
-                cout << "\t Total Cost: " << cost[i]
-                     << "\t Total Time: " << time[i] << "\n";
+                cout << "\n       Cost: " << cost[i]
+                     << "  Time: " << time[i] << "\n\n";
             }
 
             if (!roundTrips.length()) {
-                cout << "~~~~ There are no round trips ~~~~\n";
+                cout << "    [!] There are no round trips\n";
             }
+            cout << "\n";
         }
         void printAllStations() {
+            cout << "\n";
+            cout << "  +------------------------------------------------------------------+\n";
+            cout << "  |                        ALL STATIONS                             |\n";
+            cout << "  +------------------------------------------------------------------+\n\n";
             unordered_set<string> vis;
             for (auto& node : map) {
                 if (!vis.count(node.first)) {
                     dfsForPrintStations(node.first, vis);
                 }
-            }        
+            }
+            cout << "\n";
         }
         void printAllRoutes() {
-            cout << "\n\n~~~~~~ ====== All Routes ====== ~~~~~~\n\n";
+            cout << "\n";
+            cout << "  +------------------------------------------------------------------+\n";
+            cout << "  |                         ALL ROUTES                              |\n";
+            cout << "  +------------------------------------------------------------------+\n\n";
             for (auto& source : this->map) {
                 for (auto& dest : source.second) {
-                    cout << source.first << " -> " << dest.first << "\t" 
+                    cout << "    " << source.first << " -> " << dest.first << "\t" 
                          << "Cost: " << dest.second.cost << "\t"
                          << "Time: " << dest.second.time << "\n";
                 }
@@ -182,7 +195,7 @@ private:
         void dfsForPrintStations(string curr, unordered_set<string>& vis) {
             if (!stations_record[curr] || vis.count(curr)) return;
             vis.insert(curr);
-            cout << "Station: " << curr << "\n";
+            cout << "    * " << curr << "\n";
             for (auto& neighbour : map[curr]) {
                 dfsForPrintStations(neighbour.first, vis);
             }
@@ -275,15 +288,22 @@ void add_history(Stack<string>&history, string s);
 
 string showNetworkManagementMenu() {
     string option;
-    cout << "\n1. Add Station" << "\n"
-         << "2. Add Route" << "\n"
-         << "3. Delete Station" << "\n"
-         << "4. Delete Route" << "\n"
-         << "5. Find Best Route" << "\n"
-         << "6. Show All Round Trips" << "\n"
-         << "7. Show All Stations" << "\n"
-         << "8. Go Back" << "\n"
-         << "Enter your operation: ";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                    NETWORK MANAGEMENT                           |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                                                                  |\n";
+    cout << "  |   [1]  Add Station                                               |\n";
+    cout << "  |   [2]  Add Route                                                 |\n";
+    cout << "  |   [3]  Delete Station                                            |\n";
+    cout << "  |   [4]  Delete Route                                              |\n";
+    cout << "  |   [5]  Find Best Route                                           |\n";
+    cout << "  |   [6]  Show All Round Trips                                      |\n";
+    cout << "  |   [7]  Show All Stations                                         |\n";
+    cout << "  |   [8]  Go Back                                                   |\n";
+    cout << "  |                                                                  |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "\n  >> Enter your operation: ";
     cin >> option;
     return option;
 }
@@ -302,11 +322,12 @@ void registerStation(Graph& stations, Stack<string>&history, Stack<string>&stati
     cout << "Station Name: "; cin >> station;
 
     if (stations.hasNode(station)) {
-        cout << "Error: This station already exists!";
+        cout << "\n  [X] Error: This station already exists!\n";
         return;
     }
 
-    stations.insertNode(station);     
+    stations.insertNode(station);
+    cout << "\n  [OK] Station added successfully!\n";
     add_history(history, "+1" + station + " added");      
     station_history.push(station); 
     return;
@@ -316,11 +337,12 @@ void deleteStation(Graph& stations, Stack<string>&history, Stack<string>&station
     cout << "Station Name: "; cin >> station;
 
     if (!stations.hasNode(station)) {
-        cout << "Error: This station doesn't exist!";
+        cout << "\n  [X] Error: This station doesn't exist!\n";
         return;
     }
 
-    stations.deleteNode(station);     
+    stations.deleteNode(station);
+    cout << "\n  [OK] Station removed successfully!\n";
     add_history(history, "-1" + station + " removed");     
     station_history.push(station);       
     return;
@@ -337,7 +359,7 @@ void registerRoute(Graph& stations, Stack<string>&history, Stack<Route_Info>&rou
     cout << "To: "; cin >> to;
 
     if (!stations.hasNode(from) || !stations.hasNode(to)) {
-        cout << "Error: Some of these stations don't exist!";
+        cout << "\n  [X] Error: Some of these stations don't exist!\n";
         return;
     }
 
@@ -345,7 +367,7 @@ void registerRoute(Graph& stations, Stack<string>&history, Stack<Route_Info>&rou
     cout << "Time: "; cin >> time;
 
     if (!isValidOption(cost, 1, 10000) || !isValidOption(time, 1, 2880)) {
-        cout << "Error: Invalid Cost or time!";
+        cout << "\n  [X] Error: Invalid Cost or time!\n";
         return;
     }
 
@@ -360,6 +382,7 @@ void registerRoute(Graph& stations, Stack<string>&history, Stack<Route_Info>&rou
     }
 
     stations.insertEdge(from, to, Route(cost_int, time_int, vehicles_array));
+    cout << "\n  [OK] Route added successfully!\n";
     add_history(history, "+4route from " + from + " to " + to + " added");
     routes_history.push(Route_Info(from, to, Route(cost_int, time_int, vehicles_array)));
     return;
@@ -371,17 +394,18 @@ void deleteRoute(Graph& stations, Stack<string>&history, Stack<Route_Info>&route
     cout << "To: "; cin >> to;
 
     if (!stations.hasNode(from) || !stations.hasNode(to)) {
-        cout << "Error: Some of these stations don't exist!";
+        cout << "\n  [X] Error: Some of these stations don't exist!\n";
         return;
     }
     if (!stations.hasEdge(from, to)) {
-        cout << "Error: There is no route from " << from << " to " << to << "\n";
+        cout << "\n  [X] Error: There is no route from " << from << " to " << to << "\n";
         return;
     }
 
     // Get the route BEFORE deleting it (copy constructor will be used here)
     Route temp_route = stations.map[from][to];
     stations.deleteEdge(from, to);
+    cout << "\n  [OK] Route removed successfully!\n";
     add_history(history, "-4route from " + from + " to " + to + " removed");
     routes_history.push(Route_Info(from, to, temp_route));
     return;
@@ -394,25 +418,31 @@ void findBestRoute(Graph& stations) {
     cout << "To: "; cin >> to;
 
     if (!stations.hasNode(from) || !stations.hasNode(to)) {
-        cout << "Error: Some of these stations don't exist!";
+        cout << "\n  [X] Error: Some of these stations don't exist!\n";
         return;
     }
 
     if (!stations.hasEdge(from, to)) {
-        cout << "Error: There is no route from " << from << " to " << to << "\n";
+        cout << "\n  [X] Error: There is no route from " << from << " to " << to << "\n";
         return;
     }
 
     do {
-        cout << "1. Cost" << "\n"
-             << "2. Time" << "\n";
+        cout << "\n  Sort by:\n";
+        cout << "    [1] Cost\n";
+        cout << "    [2] Time\n";
+        cout << "  >> Choose: ";
         cin >> option;
     } while (!isValidOption(option, 1, 2));
 
     unordered_map<string, int> bestRoutes = stations.getShortestPath(from, option == "1" ? COST : TIME);
     
-        cout << "~~~~ Best Route: " << from << " -> " << to << "\t" 
-             << (option == "1" ? "Cost: " : "Time: ") << bestRoutes[to] << " ~~~~~~\n";
+    cout << "\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "  |                        BEST ROUTE                               |\n";
+    cout << "  +------------------------------------------------------------------+\n";
+    cout << "    " << from << " -> " << to << "\n";
+    cout << "    " << (option == "1" ? "Total Cost: " : "Total Time: ") << bestRoutes[to] << "\n\n";
 }
 void graphOperations(Graph& stations, Stack<string>&history, Stack<Route_Info>&routes_history, Stack<string>&station_history) {
     
