@@ -46,7 +46,7 @@ void add_history(Stack<string>&history, string s){
 #include"graph.h"
 #include"ticket.h"
 
-void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>stations_history, Stack<Route_Info>routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
+void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>&stations_history, Stack<Route_Info>&routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
     int operation;
     cout << "\n";
     cout << "  +------------------------------------------------------------------+\n";
