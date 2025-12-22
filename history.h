@@ -50,7 +50,7 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
     int operation;
     cout << "\n";
     cout << "  +------------------------------------------------------------------+\n";
-    cout << "  |                     NAVIGATION HISTORY                          |\n";
+    cout << "  |                     NAVIGATION HISTORY                           |\n";
     cout << "  +------------------------------------------------------------------+\n";
     cout << "  |                                                                  |\n";
     cout << "  |   [1]  View History                                              |\n";

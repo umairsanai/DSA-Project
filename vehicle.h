@@ -68,7 +68,7 @@ void displayAllVehicles(HashMap<Vehicle,int>& vehicles) {
 void insert_and_remove_vehicle(HashMap<Vehicle,int>&vehicles, Stack<string>&history, Stack<Vehicle>&vehicles_history){
     cout << "\n";
     cout << "  +------------------------------------------------------------------+\n";
-    cout << "  |                      VEHICLE REGISTRY                           |\n";
+    cout << "  |                      VEHICLE REGISTRY                            |\n";
     cout << "  +------------------------------------------------------------------+\n";
     cout << "  |                                                                  |\n";
     cout << "  |   [1]  Add Vehicle                                               |\n";
