@@ -118,7 +118,7 @@ void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<
     } while (!isValidOption(seats, 1, 5));
     do {
         cout << "Duration: "; cin >> duration;    
-    } while (!isValidOption(duration, 1, 2880)); // 2 days
+    } while (!isValidOption(seats, 1, 2880)); // 2 days
 
     if (class_choice == "1") 
         class_choice = "Economy";
