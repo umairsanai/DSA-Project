@@ -82,7 +82,8 @@ class Graph {
         }
         void insertNode(string station) {
             stations_record[station] = 1;
-            map[station] = {};
+            if (!map.count(station))
+                map[station] = {};
             nodes++;
         }
         void deleteNode(string station) {

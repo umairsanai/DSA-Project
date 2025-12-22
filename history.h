@@ -71,18 +71,47 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     stations_history.pop();
                     stations.deleteNode(top_station);
                 } else if(top[1] == '2'){
-                    int n = passengers.length();
-                    // cout<<"n: "<<n<<endl;
-                    passenger temp[n];
-                    int i = 0;
-                    while(!passengers.isEmpty()){
-                        temp[i++] = passengers.queueFront();
-                        passengers.dequeue();
-                    }
-                    for(i=0 ; i<n-1 ; i++){
-                        passengers.enqueue(temp[i]);
-                    }
+                    passenger top_pass = passenger_history.stackTop();
                     passenger_history.pop();
+                    // Undo \"+2\":
+                    // - If passenger has ticket: they were removed from queue when ticket was assigned,
+                    //   so add them back to the FRONT and restore ticket to hashmap.
+                    // - If passenger has no ticket: they were added to queue, so remove them from queue.
+                    if(top_pass.hasTicket){
+                        // Add passenger back to FRONT of queue
+                        int n = passengers.length();
+                        passenger temp[n];
+                        int i = 0;
+                        while(!passengers.isEmpty()){
+                            temp[i++] = passengers.queueFront();
+                            passengers.dequeue();
+                        }
+                        passengers.enqueue(top_pass);
+                        for(int j = 0; j < n; j++){
+                            passengers.enqueue(temp[j]);
+                        }
+                        // Restore ticket to hashmap
+                        if(!tickets_history.isEmpty()){
+                            Ticket temp_ticket = tickets_history.stackTop();
+                            tickets_history.pop();
+                            tickets[temp_ticket.ticketID] = temp_ticket;
+                        }
+                    } else{
+                        // Remove this passenger from queue (they were just added)
+                        int n = passengers.length();
+                        passenger temp[n];
+                        int i = 0;
+                        while(!passengers.isEmpty()){
+                            passenger p = passengers.queueFront();
+                            passengers.dequeue();
+                            if(p.name != top_pass.name){
+                                temp[i++] = p;
+                            }
+                        }
+                        for(int j = 0; j < i; j++){
+                            passengers.enqueue(temp[j]);
+                        }
+                    }
                 } else if(top[1] == '3'){
                     Vehicle top_veh = vehicles_history.stackTop();
                     vehicles_history.pop();
@@ -104,6 +133,8 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                 } else if(top[1] == '2'){
                     passenger top_pass = passenger_history.stackTop();
                     passenger_history.pop();
+                    // Undo \"-2\" (passenger was removed from FRONT of queue):
+                    // Always add passenger back to FRONT of queue.
                     int n = passengers.length();
                     passenger temp[n];
                     int i = 0;
@@ -112,12 +143,18 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                         passengers.dequeue();
                     }
                     passengers.enqueue(top_pass);
-                    for(i=0 ; i<n ; i++){
-                        passengers.enqueue(temp[i]);
+                    for(int j = 0; j < n; j++){
+                        passengers.enqueue(temp[j]);
                     }
-                    if(top_pass.hasTicket){
-                        tickets[top_pass.ticket.ticketID] = top_pass.ticket;
+                    // If passenger had a ticket, restore it to hashmap as well,
+                    // but re-queued passenger should not keep the ticket.
+                    if(top_pass.hasTicket && !tickets_history.isEmpty()){
+                        Ticket temp_ticket = tickets_history.stackTop();
                         tickets_history.pop();
+                        tickets[temp_ticket.ticketID] = temp_ticket;
+                        top_pass.hasTicket = false;
+                        top_pass.ticketID.clear();
+                        top_pass.ticket = Ticket();
                     }
                 } else if(top[1] == '3'){
                     Vehicle top_veh = vehicles_history.stackTop();

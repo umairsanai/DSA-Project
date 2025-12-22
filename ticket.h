@@ -114,7 +114,7 @@ void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<
     }
 
     do {
-        cout << "Seats: "; cin >> seats;        
+        cout << "Seat No: "; cin >> seats;        
     } while (!isValidOption(seats, 1, 5));
     do {
         cout << "Duration: "; cin >> duration;    
