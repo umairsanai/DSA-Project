@@ -61,7 +61,7 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
     cin>>operation;
 
     if(operation == 1) show_history(history);
-    else{
+    else if(operation == 2){
         if(!history.isEmpty()){
             string top = history.stackTop();
             history.pop();
@@ -135,5 +135,7 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
             }
             cout<<"\n  [OK] Operation Undo Done\n\n";
         } else cout<<"\n  [!] No operations done yet!\n\n";
+    } else {
+        cout<<"\n  [!] Invalid Operation!\n\n";
     }
 }
