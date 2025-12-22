@@ -13,7 +13,7 @@ using namespace std;
 struct passenger {
     string name;
     Ticket ticket;
-    string ticketID;   // ✅ store ONLY ticketID (not full Ticket)
+    string ticketID;   // store ONLY ticketID (not full Ticket)
     bool hasTicket;
 
     passenger(string n = "") {
@@ -61,12 +61,12 @@ static void displayPassengerQueue(Queue<passenger>& q) {
 }
 
 void passenger_ticketing(
-    Queue<passenger>& passengers,                 // ✅ main passenger queue (FIFO)
+    Queue<passenger>& passengers,                 // main passenger queue (FIFO)
     Stack<string>& history,
     Stack<passenger>& passenger_history,
     Stack<Ticket>& tickets_history,
     unordered_map<string, Ticket>& tickets,       // ticket pool (ticketID -> Ticket)
-    unordered_map<string, unordered_set<int>>& occupiedSeats // ✅ vehicleID -> occupied seat set
+    unordered_map<string, unordered_set<int>>& occupiedSeats // vehicleID -> occupied seat set
 ) {
     int operation = 0;
 
@@ -97,7 +97,7 @@ void passenger_ticketing(
             p.hasTicket = false;
             p.ticketID = "";
 
-            // ✅ Main passengers queue (FIFO)
+            // Main passengers queue (FIFO)
             passengers.enqueue(p);
 
             cout << "\n  [OK] Passenger added to queue!\n";
@@ -169,14 +169,14 @@ void passenger_ticketing(
 
                 Ticket t = it->second; // snapshot (for history/undo)
 
-                // ✅ Seat clash prevention
+                // Seat clash prevention
                 if (occupiedSeats[t.vehicleID].count(t.seat)) {
                     cout << "  [!] Seat " << t.seat << " already occupied on vehicle "
                          << t.vehicleID << ". Choose another ticket.\n";
                     continue;
                 }
 
-                // ✅ Assign by storing ticketID and full ticket object in passenger
+                // Assign by storing ticketID and full ticket object in passenger
                 p.ticketID = chosenID;
                 p.ticket = t;  // Store full ticket for undo functionality
                 p.hasTicket = true;
@@ -203,3 +203,4 @@ void passenger_ticketing(
         }
     }
 }
+
