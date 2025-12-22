@@ -69,7 +69,6 @@ int main(){
     int choice = 0;
 
     unordered_map<string, Ticket> tickets;     // <id, Ticket>
-    Queue<passenger> ticketQueue;              // FIFO ticket request queue
     unordered_map<string, unordered_set<int>> occupiedSeats; // vehicleID -> occupied seats
     Stack<Ticket> tickets_history;
 
@@ -77,58 +76,58 @@ int main(){
     // HARDCODED SETUP (for smooth presentation/demo)
     // =========================================================
 
-    // ---- Stations (nodes) ----
-    stations.insertNode("Islamabad");
-    stations.insertNode("Lahore");
-    stations.insertNode("Peshawar");
-    stations.insertNode("Multan");
-    stations.insertNode("Faisalabad");
-    stations.insertNode("Karachi");
+    // // ---- Stations (nodes) ----
+    // stations.insertNode("Islamabad");
+    // stations.insertNode("Lahore");
+    // stations.insertNode("Peshawar");
+    // stations.insertNode("Multan");
+    // stations.insertNode("Faisalabad");
+    // stations.insertNode("Karachi");
 
-    // ---- Routes (edges) ----
-    // NOTE: Graph is directed in your code, so insert both directions if you want "two-way" travel
-    stations.insertEdge("Islamabad", "Lahore", Route(1500, 240));
-    stations.insertEdge("Lahore", "Islamabad", Route(1500, 240));
+    // // ---- Routes (edges) ----
+    // // NOTE: Graph is directed in your code, so insert both directions if you want "two-way" travel
+    // stations.insertEdge("Islamabad", "Lahore", Route(1500, 240));
+    // stations.insertEdge("Lahore", "Islamabad", Route(1500, 240));
 
-    stations.insertEdge("Islamabad", "Peshawar", Route(800, 180));
-    stations.insertEdge("Peshawar", "Islamabad", Route(800, 180));
+    // stations.insertEdge("Islamabad", "Peshawar", Route(800, 180));
+    // stations.insertEdge("Peshawar", "Islamabad", Route(800, 180));
 
-    stations.insertEdge("Lahore", "Faisalabad", Route(500, 120));
-    stations.insertEdge("Faisalabad", "Lahore", Route(500, 120));
+    // stations.insertEdge("Lahore", "Faisalabad", Route(500, 120));
+    // stations.insertEdge("Faisalabad", "Lahore", Route(500, 120));
 
-    stations.insertEdge("Faisalabad", "Multan", Route(900, 180));
-    stations.insertEdge("Multan", "Faisalabad", Route(900, 180));
+    // stations.insertEdge("Faisalabad", "Multan", Route(900, 180));
+    // stations.insertEdge("Multan", "Faisalabad", Route(900, 180));
 
-    stations.insertEdge("Lahore", "Multan", Route(1200, 210));
-    stations.insertEdge("Multan", "Lahore", Route(1200, 210));
+    // stations.insertEdge("Lahore", "Multan", Route(1200, 210));
+    // stations.insertEdge("Multan", "Lahore", Route(1200, 210));
 
-    stations.insertEdge("Karachi", "Lahore", Route(3500, 900));
-    stations.insertEdge("Lahore", "Karachi", Route(3500, 900));
+    // stations.insertEdge("Karachi", "Lahore", Route(3500, 900));
+    // stations.insertEdge("Lahore", "Karachi", Route(3500, 900));
 
-    // ---- Vehicles (HashMap<Vehicle,int>) ----
-    // Using int=1 just as stored value placeholder
-    vehicles.insert(Vehicle("Daewoo Bus", "V01", BUS), 1);
-    vehicles.insert(Vehicle("Hiace Van",  "V02", VAN), 1);
-    vehicles.insert(Vehicle("AC Coach",   "V03", TRAIN), 1);
-    vehicles.insert(Vehicle("City Car",   "V04", CAR), 1);
+    // // ---- Vehicles (HashMap<Vehicle,int>) ----
+    // // Using int=1 just as stored value placeholder
+    // vehicles.insert(Vehicle("Daewoo Bus", "V01", BUS), 1);
+    // vehicles.insert(Vehicle("Hiace Van",  "V02", VAN), 1);
+    // vehicles.insert(Vehicle("AC Coach",   "V03", TRAIN), 1);
+    // vehicles.insert(Vehicle("City Car",   "V04", CAR), 1);
 
-    // ---- Tickets (available tickets pool) ----
-    // Seats are within 1–5 (your ticketing constraint)
-    tickets["T101"] = Ticket("Islamabad", "Lahore",    "Economy",     "T101", "V01", 1, 240);
-    tickets["T102"] = Ticket("Islamabad", "Lahore",    "Business",    "T102", "V01", 2, 240);
-    tickets["T103"] = Ticket("Lahore",    "Multan",    "AC Standard", "T103", "V02", 1, 210);
-    tickets["T104"] = Ticket("Peshawar",  "Islamabad", "Economy",     "T104", "V03", 3, 180);
-    tickets["T105"] = Ticket("Karachi",   "Lahore",    "Business",    "T105", "V03", 4, 900);
+    // // ---- Tickets (available tickets pool) ----
+    // // Seats are within 1–5 (your ticketing constraint)
+    // tickets["T101"] = Ticket("Islamabad", "Lahore",    "Economy",     "T101", "V01", 1, 240);
+    // tickets["T102"] = Ticket("Islamabad", "Lahore",    "Business",    "T102", "V01", 2, 240);
+    // tickets["T103"] = Ticket("Lahore",    "Multan",    "AC Standard", "T103", "V02", 1, 210);
+    // tickets["T104"] = Ticket("Peshawar",  "Islamabad", "Economy",     "T104", "V03", 3, 180);
+    // tickets["T105"] = Ticket("Karachi",   "Lahore",    "Business",    "T105", "V03", 4, 900);
 
-    // ---- Optional: Preload passenger ticket request queue for quick demo ----
-    // These passengers are already waiting in FIFO order
-    passenger p1("Ali");
-    passenger p2("Ahmed");
-    passenger p3("Sara");
+    // // ---- Optional: Preload passenger ticket request queue for quick demo ----
+    // // These passengers are already waiting in FIFO order
+    // passenger p1("Ali");
+    // passenger p2("Ahmed");
+    // passenger p3("Sara");
 
-    passengers.enqueue(p1); ticketQueue.enqueue(p1);
-    passengers.enqueue(p2); ticketQueue.enqueue(p2);
-    passengers.enqueue(p3); ticketQueue.enqueue(p3);
+    // passengers.enqueue(p1); ticketQueue.enqueue(p1);
+    // passengers.enqueue(p2); ticketQueue.enqueue(p2);
+    // passengers.enqueue(p3); ticketQueue.enqueue(p3);
 
     // =========================================================
 
@@ -158,7 +157,7 @@ int main(){
                 break;
 
             case 4:
-                passenger_ticketing(passengers, ticketQueue, history, passenger_history,
+                passenger_ticketing(passengers, history, passenger_history,
                                     tickets_history, tickets, occupiedSeats);
                 break;
 

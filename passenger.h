@@ -61,8 +61,7 @@ static void displayPassengerQueue(Queue<passenger>& q) {
 }
 
 void passenger_ticketing(
-    Queue<passenger>& passengers,                 // optional: general passenger storage
-    Queue<passenger>& ticketQueue,                // ✅ FIFO ticket request queue
+    Queue<passenger>& passengers,                 // ✅ main passenger queue (FIFO)
     Stack<string>& history,
     Stack<passenger>& passenger_history,
     Stack<Ticket>& tickets_history,
@@ -98,41 +97,38 @@ void passenger_ticketing(
             p.hasTicket = false;
             p.ticketID = "";
 
-            // Keep in overall passengers queue if you want (optional)
+            // ✅ Main passengers queue (FIFO)
             passengers.enqueue(p);
 
-            // ✅ This is the actual ticketing request queue (FIFO)
-            ticketQueue.enqueue(p);
-
-            cout << "\n  [OK] Passenger added to ticket request queue!\n";
-            add_history(history, "+2 passenger " + p.name + " entered ticket queue");
+            cout << "\n  [OK] Passenger added to queue!\n";
+            add_history(history, "+2passenger " + p.name + " entered ticket queue");
             passenger_history.push(p);
         }
 
         // ------------------------------------------------------------
-        // [2] Display ticket request queue
+        // [2] Display passenger queue
         // ------------------------------------------------------------
         else if (operation == 2) {
-            displayPassengerQueue(ticketQueue);
+            displayPassengerQueue(passengers);
         }
 
         // ------------------------------------------------------------
         // [3] Process next passenger (FIFO) and assign ticket by ID
         // ------------------------------------------------------------
         else if (operation == 3) {
-            if (ticketQueue.isEmpty()) {
-                cout << "\n  [!] No passengers waiting in ticket request queue!\n";
+            if (passengers.isEmpty()) {
+                cout << "\n  [!] No passengers waiting in queue!\n";
                 continue;
             }
 
-            passenger p = ticketQueue.queueFront();
-            ticketQueue.dequeue();
+            passenger p = passengers.queueFront();
+            passengers.dequeue();
 
             cout << "\n  Serving (FIFO): " << p.name << "\n";
 
             if (tickets.empty()) {
                 cout << "  [!] No tickets available to assign!\n";
-                add_history(history, "-7 no tickets available for " + p.name);
+                add_history(history, "-2no tickets available for " + p.name);
                 passenger_history.push(p);
                 continue;
             }
@@ -160,7 +156,7 @@ void passenger_ticketing(
                     p.hasTicket = false;
                     p.ticketID = "";
                     cout << "  [OK] Skipped ticket assignment.\n";
-                    add_history(history, "-7 " + p.name + " skipped ticket assignment");
+                    add_history(history, "-2" + p.name + " skipped ticket assignment");
                     passenger_history.push(p);
                     break;
                 }
@@ -180,8 +176,9 @@ void passenger_ticketing(
                     continue;
                 }
 
-                // ✅ Assign by storing ONLY ticketID in passenger
+                // ✅ Assign by storing ticketID and full ticket object in passenger
                 p.ticketID = chosenID;
+                p.ticket = t;  // Store full ticket for undo functionality
                 p.hasTicket = true;
 
                 // Mark seat as taken
@@ -194,7 +191,7 @@ void passenger_ticketing(
                 tickets.erase(it);
 
                 cout << "  [OK] Ticket assigned to passenger!\n";
-                add_history(history, "+7 ticket " + chosenID + " assigned to " + p.name);
+                add_history(history, "+2ticket " + chosenID + " assigned to " + p.name);
 
                 passenger_history.push(p);
                 break;
