@@ -46,7 +46,7 @@ void add_history(Stack<string>&history, string s){
 #include"graph.h"
 #include"ticket.h"
 
-void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>&stations_history, Stack<Route_Info>&routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets){
+void history_operations(Stack<string>&history, Stack<passenger>&passenger_history, Stack<Vehicle>&vehicles_history, Stack<string>&stations_history, Stack<Route_Info>&routes_history, Graph &stations, Queue<passenger>&passengers, HashMap<Vehicle,int>&vehicles, Stack<Ticket>&tickets_history, unordered_map<string,Ticket>&tickets, unordered_map<string, unordered_set<int>>& occupiedSeats){
     int operation;
     cout << "\n";
     cout << "  +------------------------------------------------------------------+\n";
@@ -78,7 +78,12 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                     //   so add them back to the FRONT and restore ticket to hashmap.
                     // - If passenger has no ticket: they were added to queue, so remove them from queue.
                     if(top_pass.hasTicket){
-                        // Add passenger back to FRONT of queue
+                        // Add passenger back to FRONT of queue (without ticket)
+                        passenger restored_pass = top_pass;
+                        restored_pass.hasTicket = false;
+                        restored_pass.ticketID = "";
+                        restored_pass.ticket = Ticket();
+                        
                         int n = passengers.length();
                         passenger temp[n];
                         int i = 0;
@@ -86,15 +91,17 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                             temp[i++] = passengers.queueFront();
                             passengers.dequeue();
                         }
-                        passengers.enqueue(top_pass);
+                        passengers.enqueue(restored_pass);
                         for(int j = 0; j < n; j++){
                             passengers.enqueue(temp[j]);
                         }
-                        // Restore ticket to hashmap
+                        // Restore ticket to hashmap and free the seat
                         if(!tickets_history.isEmpty()){
                             Ticket temp_ticket = tickets_history.stackTop();
                             tickets_history.pop();
                             tickets[temp_ticket.ticketID] = temp_ticket;
+                            // Free the seat
+                            occupiedSeats[temp_ticket.vehicleID].erase(temp_ticket.seat);
                         }
                     } else{
                         // Remove this passenger from queue (they were just added)
@@ -152,6 +159,8 @@ void history_operations(Stack<string>&history, Stack<passenger>&passenger_histor
                         Ticket temp_ticket = tickets_history.stackTop();
                         tickets_history.pop();
                         tickets[temp_ticket.ticketID] = temp_ticket;
+                        // Free the seat
+                        occupiedSeats[temp_ticket.vehicleID].erase(temp_ticket.seat);
                         top_pass.hasTicket = false;
                         top_pass.ticketID.clear();
                         top_pass.ticket = Ticket();

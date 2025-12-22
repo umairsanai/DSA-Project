@@ -165,7 +165,7 @@ int main(){
                 history_operations(history, passenger_history, vehicles_history,
                                    stations_history, routes_history,
                                    stations, passengers, vehicles,
-                                   tickets_history, tickets);
+                                   tickets_history, tickets, occupiedSeats);
                 break;
 
             case 6:

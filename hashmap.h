@@ -101,4 +101,16 @@ public:
             cout << endl;
         }
     }
+
+    // Get all keys in the HashMap
+    Array<K> getAllKeys() {
+        Array<K> keys;
+        for (int i = 0; i < bucketCount; i++) {
+            Array<Entry>& bucket = buckets[i];
+            for (int j = 0; j < bucket.length(); j++) {
+                keys.push_back(bucket[j].key);
+            }
+        }
+        return keys;
+    }
 };

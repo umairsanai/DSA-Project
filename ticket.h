@@ -101,12 +101,14 @@ void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<
     } while (!isValidOption(class_choice, 1, 3));
 
     cout << "Ticket ID: "; cin >> ticketID;
-    cout << "Vehicle ID: "; cin >> vehicleID;
-
+    
+    // Check for duplicate ticket ID immediately
     if (tickets.count(ticketID)) {
         cout << "\n  [X] Error: A ticket with this ID already exists!\n";
         return;
     }
+    
+    cout << "Vehicle ID: "; cin >> vehicleID;
 
     if (!vehicles.containsKey(Vehicle("", vehicleID))) {
         cout << "\n  [X] Error: No such vehicle exists!\n";
@@ -118,7 +120,7 @@ void addTicket(Graph& stations, unordered_map<string, Ticket>& tickets, HashMap<
     } while (!isValidOption(seats, 1, 5));
     do {
         cout << "Duration: "; cin >> duration;    
-    } while (!isValidOption(seats, 1, 2880)); // 2 days
+    } while (!isValidOption(duration, 1, 2880)); // 2 days
 
     if (class_choice == "1") 
         class_choice = "Economy";
